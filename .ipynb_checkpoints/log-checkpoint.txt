@@ -205,17 +205,39 @@ S -> V - WIDTH=50,DEPTH=2 #similar to O
 
 #Changing to resetting the battery only (1-EPSILON)% of the time
 S_small - WIDTH=20,DEPTH=3
+#cannot learn a good enough policy. BAD performance. Lots of battery violations
 
 S - WIDTH=20,DEPTH=3
+#has good performance but not very robust.
+#maybe if help was removed after a few iterations, it would work very well.
 
 T - WIDTH=50,DEPTH=3
 #NG performance. Seeds make little difference. All layers except Output Layer have uneven distribution of weights
 #bad performance probably due too many parameters to learn
 
 U - WIDTH=20,DEPTH=2
+#NG performance. Lots of battery overflows for seed0
+#very good performance for seed2
 
 V - WIDTH=50,DEPTH=2
+#okay performance but not yet acceptable
+#is robust enough to deal with battery exhaustions
+#kind of unstable output graph
 
+Using U as a checkpoint.
+U -> W :EPSILON = 0.95
+#doesn't work very well
+
+U -> X: removing reward broadcast
+#works pretty well considering the reward is not broadcast
+
+X -> X1 : DEPTH = 3
+#X1 seems very good. Seeding doesn't seem to make much difference
+#Learning is a bit erratic and weights don't seem to be evenly distributed
+
+X -> Y: HELP=0.9
+        EPSILON=0.9
+#Y does not have as good a performance.       
 
 
 Fx -> increase width
